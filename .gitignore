@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.vercel/
+.env
+.env.local
+.env.production
+.env.*.local
+*.log
+
+node_modules/
+.next/
+.pnpm-store/
+.skill-tmp/
+.agents/
+.env.local
+

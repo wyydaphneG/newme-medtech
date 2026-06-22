@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NEWME MEDTECH CMS",
+  "version": 1,
+  "contentStatus": ["draft", "published", "archived"],
+  "entities": {
+    "System": {
+      "table": "systems",
+      "required": ["name", "slug", "description"],
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "slug": "slug",
+        "description": "text",
+        "hero_media_id": "uuid|null",
+        "seo_title": "string|null",
+        "seo_description": "text|null",
+        "status": "draft|published|archived",
+        "sort_order": "integer"
+      },
+      "relations": {
+        "applications": "many-to-many:system_applications",
+        "technologies": "many-to-many:system_technologies",
+        "products": "one-to-many:products.system_id"
+      }
+    },
+    "Technology": {
+      "table": "technologies",
+      "required": ["name", "slug", "type", "definition", "mechanism"],
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "slug": "slug",
+        "type": "light|energy|skin-care",
+        "definition": "text",
+        "mechanism": "text",
+        "hero_media_id": "uuid|null",
+        "seo_title": "string|null",
+        "seo_description": "text|null",
+        "status": "draft|published|archived",
+        "sort_order": "integer"
+      },
+      "relations": {
+        "systems": "many-to-many:system_technologies",
+        "applications": "many-to-many:technology_applications",
+        "products": "one-to-many:products.primary_technology_id",
+        "faqs": "one-to-many:faqs"
+      }
+    },
+    "Product": {
+      "table": "products",
+      "required": ["name", "slug", "system_id", "primary_technology_id", "description"],
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "short_name": "string",
+        "slug": "slug",
+        "system_id": "uuid",
+        "primary_technology_id": "uuid",
+        "description": "text",
+        "workflow_role": "text|null",
+        "key_features": "string[]",
+        "specs": "json",
+        "regulatory_note": "text|null",
+        "seo_title": "string|null",
+        "seo_description": "text|null",
+        "status": "draft|published|archived",
+        "sort_order": "integer"
+      },
+      "relations": {
+        "system": "many-to-one:systems",
+        "primary_technology": "many-to-one:technologies",
+        "applications": "many-to-many:product_applications",
+        "images": "one-to-many:product_images"
+      }
+    },
+    "Application": {
+      "table": "applications",
+      "required": ["name", "slug", "description"],
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "slug": "slug",
+        "description": "text",
+        "clinical_outcomes": "string[]",
+        "clinical_disclaimer": "text|null",
+        "hero_media_id": "uuid|null",
+        "seo_title": "string|null",
+        "seo_description": "text|null",
+        "status": "draft|published|archived",
+        "sort_order": "integer"
+      },
+      "relations": {
+        "systems": "many-to-many:system_applications",
+        "technologies": "many-to-many:technology_applications",
+        "products": "many-to-many:product_applications"
+      }
+    },
+    "Page": {
+      "table": "pages",
+      "fields": {
+        "id": "uuid",
+        "key": "unique string",
+        "title": "string",
+        "eyebrow": "string|null",
+        "content": "json",
+        "seo_title": "string|null",
+        "seo_description": "text|null",
+        "status": "draft|published|archived"
+      }
+    },
+    "Article": {
+      "table": "articles",
+      "fields": {
+        "id": "uuid",
+        "title": "string",
+        "slug": "slug",
+        "category": "string|null",
+        "excerpt": "text|null",
+        "sections": "json[]",
+        "read_time": "string|null",
+        "status": "draft|published|archived",
+        "published_at": "datetime|null"
+      },
+      "relations": {
+        "systems": "many-to-many:article_systems"
+      }
+    },
+    "MediaAsset": {
+      "table": "media_assets",
+      "fields": {
+        "id": "uuid",
+        "storage_path": "unique string",
+        "public_url": "string",
+        "alt_text": "string",
+        "caption": "string|null",
+        "width": "integer|null",
+        "height": "integer|null",
+        "mime_type": "string|null"
+      }
+    }
+  },
+  "globalRules": {
+    "hierarchy": "SYSTEM -> TECHNOLOGY -> PRODUCT -> APPLICATION",
+    "productRequiresSystem": true,
+    "productRequiresPrimaryTechnology": true,
+    "publishedContentOnlyOnPublicSite": true,
+    "regulatoryClaimsMustBeMarketSpecific": true,
+    "internalLinksMustFollowEntityRelations": true
+  }
+}

@@ -1,0 +1,10 @@
+NEWME MEDTECH 网站打开方法
+
+1. 双击“启动网站.cmd”
+2. 等待约 5 秒，浏览器会自动打开 http://localhost:3000
+3. 请保持启动窗口开启；关闭窗口后网站会停止
+
+如果浏览器没有自动打开，请手动访问：
+http://localhost:3000
+
+首次正式上线前，请复制 .env.example 为 .env.local，并填写 OpenAI、Supabase、Resend、WhatsApp 等配置。

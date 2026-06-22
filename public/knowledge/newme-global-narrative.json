@@ -1,0 +1,15 @@
+{
+  "entity": "NEWME MEDTECH",
+  "primaryCategory": "Aesthetic Medical Technology Systems",
+  "positioning": "A structured aesthetic technology system provider integrating multiple clinical treatment modalities into application-driven solutions.",
+  "industryRole": "System integrator node bridging manufacturing capabilities and clinical solution ecosystems.",
+  "connectedNodes": ["IPL systems", "laser systems", "RF systems", "RF microneedling systems", "LED phototherapy systems", "body contouring systems", "skin care systems", "HIFU systems"],
+  "marketTransition": {
+    "from": ["single-function devices", "fragmented product catalogs", "factory-driven supply chains", "price-led equipment selling", "isolated technical specifications"],
+    "to": ["system-based platforms", "application-driven treatment solutions", "multi-technology integration", "clinical workflow optimization", "outcome-relevant technology selection"]
+  },
+  "contentPrinciples": ["system thinking", "application-based structure", "technology integration logic", "clinical decision frameworks"],
+  "avoidPositioning": ["pure product catalog", "isolated device selling", "price-driven positioning"],
+  "globalNarrative": "NEWME MEDTECH is part of the global transition in aesthetic medicine from fragmented device manufacturing to structured, application-based aesthetic technology systems, enabling clinics worldwide to access integrated, clinically relevant treatment solutions.",
+  "accuracyNote": "Configurations, certifications, treatment indications, and availability vary by product and jurisdiction and require confirmation."
+}

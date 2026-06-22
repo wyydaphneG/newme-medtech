@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": 1,
+  "defaults": {
+    "site_name": "NEWME MEDTECH",
+    "title_separator": " | ",
+    "robots": "index,follow,max-image-preview:large",
+    "og_type": "website",
+    "twitter_card": "summary_large_image",
+    "title_target_characters": "45-60",
+    "description_target_characters": "140-160"
+  },
+  "templates": {
+    "system": {
+      "route": "/systems/{slug}",
+      "title": "{system_name} Aesthetic System | NEWME MEDTECH",
+      "description": "Explore {system_name}, including its clinical applications, physical technologies, professional platforms, and treatment workflow relationships.",
+      "h1": "{system_name}",
+      "schema_types": ["CollectionPage", "ItemList", "BreadcrumbList"],
+      "required_relations": ["applications", "technologies", "products"],
+      "breadcrumb": ["Home", "Systems", "{system_name}"]
+    },
+    "technology": {
+      "route": "/technologies/{slug}",
+      "title": "{technology_name} Technology | NEWME MEDTECH",
+      "description": "Understand the mechanism, treatment applications, related aesthetic systems, and professional platforms using {technology_name}.",
+      "h1": "{technology_name}",
+      "schema_types": ["TechArticle", "FAQPage", "BreadcrumbList"],
+      "required_relations": ["systems", "applications", "products"],
+      "breadcrumb": ["Home", "Technologies", "{technology_name}"]
+    },
+    "product": {
+      "route": "/products/{slug}",
+      "title": "{product_name} Professional Platform | NEWME MEDTECH",
+      "description": "Review the applications, primary technology, parent system, key features, and available configuration of {product_name}.",
+      "h1": "{product_name}",
+      "schema_types": ["Product", "BreadcrumbList"],
+      "required_relations": ["system", "primary_technology", "applications"],
+      "breadcrumb": ["Home", "Systems", "{system_name}", "{product_name}"],
+      "required_disclaimer": "Regulatory status, intended use, and available configurations vary by product and market."
+    },
+    "application": {
+      "route": "/applications/{slug}",
+      "title": "{application_name} Technologies | NEWME MEDTECH",
+      "description": "Explore the aesthetic systems, physical technologies, and professional platforms associated with {application_name} treatment planning.",
+      "h1": "{application_name}",
+      "schema_types": ["MedicalWebPage", "ItemList", "BreadcrumbList"],
+      "required_relations": ["systems", "technologies", "products"],
+      "breadcrumb": ["Home", "Applications", "{application_name}"],
+      "required_disclaimer": "Treatment suitability and outcomes require professional assessment and vary by client, protocol, operator, and intended use."
+    },
+    "article": {
+      "route": "/blog/{slug}",
+      "title": "{article_title} | NEWME MEDTECH",
+      "description": "{article_excerpt}",
+      "h1": "{article_title}",
+      "schema_types": ["Article", "BreadcrumbList"],
+      "required_relations": ["systems"],
+      "breadcrumb": ["Home", "Insights", "{article_title}"]
+    }
+  },
+  "validation": {
+    "unique_title": true,
+    "unique_description": true,
+    "canonical_required": true,
+    "single_h1": true,
+    "image_alt_required": true,
+    "published_entity_required": true,
+    "relation_based_internal_links_only": true,
+    "verified_regulatory_claims_only": true
+  }
+}

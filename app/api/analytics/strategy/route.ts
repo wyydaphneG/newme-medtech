@@ -1,0 +1,2 @@
+import {NextResponse} from 'next/server';import {getActiveConversionStrategy} from '@/lib/conversion-feedback';
+export async function GET(request:Request){const path=new URL(request.url).searchParams.get('path')||'/';if(!path.startsWith('/')||path.length>500)return NextResponse.json({strategy:null});try{const strategy=await getActiveConversionStrategy(path);return NextResponse.json({strategy},{headers:{'Cache-Control':'public, max-age=300, stale-while-revalidate=600'}});}catch(error){console.error(error);return NextResponse.json({strategy:null});}}

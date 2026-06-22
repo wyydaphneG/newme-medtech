@@ -1,0 +1,19 @@
+'use client';
+import {useEffect,useRef,useState} from 'react';import {Bot,ChevronRight,MessageCircle,Send,X} from 'lucide-react';
+type Msg={role:'assistant'|'user';content:string};
+const starters=['I own a clinic','I’m a distributor','Help me choose a system'];
+
+export default function ChatWidget(){
+  const [open,setOpen]=useState(false),[nudge,setNudge]=useState(false),[input,setInput]=useState(''),[loading,setLoading]=useState(false);
+  const [msgs,setMsgs]=useState<Msg[]>([{role:'assistant',content:'Hi — I’m Nova, NEWME’s technology systems advisor. Tell me about your practice and I’ll help structure the right shortlist.'}]);
+  const end=useRef<HTMLDivElement>(null);
+  useEffect(()=>{if(sessionStorage.getItem('newme-nova-greeted'))return;const t=setTimeout(()=>{setNudge(true);sessionStorage.setItem('newme-nova-greeted','1')},7000);return()=>clearTimeout(t)},[]);
+  useEffect(()=>end.current?.scrollIntoView({behavior:'smooth'}),[msgs]);
+  function toggle(){setOpen(v=>!v);setNudge(false)}
+  async function send(text=input){if(!text.trim()||loading)return;const next=[...msgs,{role:'user' as const,content:text}];setMsgs(next);setInput('');setLoading(true);try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:next})});const d=await r.json();setMsgs([...next,{role:'assistant',content:d.message}])}catch{setMsgs([...next,{role:'assistant',content:'I’m having trouble connecting. You can still request a quote and our team will help directly.'}])}setLoading(false)}
+  return <>
+    {nudge&&!open&&<button onClick={toggle} className="fixed bottom-24 right-5 z-50 max-w-[260px] rounded-2xl border border-clay/30 bg-cream px-4 py-3 text-left shadow-xl"><span className="block text-sm font-bold text-charcoal">Need help choosing a system?</span><span className="mt-1 block text-xs text-ink/70">Tell Nova your treatment goals →</span></button>}
+    <button onClick={toggle} className="fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-sage text-charcoal shadow-2xl" aria-label="Open AI aesthetic technology advisor">{open?<X/>:<MessageCircle/>}</button>
+    {open&&<div className="fixed bottom-24 right-4 z-50 flex h-[min(620px,calc(100vh-8rem))] w-[calc(100%-2rem)] max-w-[390px] flex-col overflow-hidden rounded-3xl border border-forest/20 bg-cream shadow-2xl"><div className="flex items-center gap-3 bg-sand p-4"><span className="grid h-9 w-9 place-items-center rounded-full bg-sage/25"><Bot size={19}/></span><div><p className="text-sm font-bold text-charcoal">Nova · Technology systems advisor</p><p className="text-xs text-ink/65">Application guidance in under 2 minutes</p></div></div><div className="flex-1 space-y-3 overflow-y-auto p-4">{msgs.map((m,i)=><div key={i} className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-6 ${m.role==='assistant'?'bg-white text-ink':'ml-auto bg-forest text-ink'}`}>{m.content}</div>)}{msgs.length===1&&<div className="space-y-2 pt-1">{starters.map(s=><button onClick={()=>send(s)} key={s} className="flex w-full items-center justify-between rounded-xl border border-forest/20 bg-white/40 p-3 text-left text-sm font-semibold">{s}<ChevronRight size={14}/></button>)}</div>}{loading&&<div className="w-fit rounded-2xl bg-white px-4 py-3 text-sm text-ink/50">Thinking…</div>}<div ref={end}/></div><div className="border-t border-forest/20 p-3"><div className="flex gap-2"><input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="Ask about systems, applications, specs…" className="min-w-0 flex-1 rounded-full border border-forest/30 bg-white px-4 text-sm outline-none"/><button onClick={()=>send()} className="grid h-11 w-11 place-items-center rounded-full bg-forest text-ink"><Send size={16}/></button></div><p className="mt-2 text-center text-[10px] text-ink/50">AI guidance, verified by our specialists before purchase.</p></div></div>}
+  </>
+}

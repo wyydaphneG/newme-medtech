@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "roles": {
+    "admin": ["create", "read", "update", "publish", "archive", "delete", "export"],
+    "editor": ["create", "read", "update", "archive_draft", "upload"],
+    "viewer": ["read"]
+  },
+  "entities": {
+    "systems": {"table":"systems","list":["name","slug","status","sort_order","updated_at"],"required":["name","slug","description"],"relations":["system_technologies","system_applications","products"]},
+    "technologies": {"table":"technologies","list":["name","slug","type","status","sort_order","updated_at"],"required":["name","slug","type","definition","mechanism"],"relations":["system_technologies","technology_applications","products","faqs"]},
+    "products": {"table":"products","list":["name","short_name","slug","system_id","primary_technology_id","status","updated_at"],"required":["name","short_name","slug","system_id","primary_technology_id","description"],"relations":["product_applications","product_images"]},
+    "applications": {"table":"applications","list":["name","slug","status","sort_order","updated_at"],"required":["name","slug","description"],"relations":["system_applications","technology_applications","product_applications"]},
+    "pages": {"table":"pages","list":["key","title","status","updated_at"],"required":["key","title","content"],"relations":[]},
+    "articles": {"table":"articles","list":["title","slug","category","status","published_at","updated_at"],"required":["title","slug","sections"],"relations":["article_systems"]},
+    "faqs": {"table":"faqs","list":["question","status","sort_order","updated_at"],"required":["question","answer"],"relations":[]},
+    "media": {"table":"media_assets","list":["public_url","alt_text","mime_type","updated_at"],"required":["storage_path","public_url","alt_text"],"relations":["product_images"]},
+    "leads": {"table":"leads","list":["name","country","business_type","interested_product","status","created_at"],"required":["name"],"relations":[],"public_mutation":false},
+    "system-technologies": {"table":"system_technologies","required":["system_id","technology_id"]},
+    "system-applications": {"table":"system_applications","required":["system_id","application_id"]},
+    "technology-applications": {"table":"technology_applications","required":["technology_id","application_id"]},
+    "product-applications": {"table":"product_applications","required":["product_id","application_id"]},
+    "product-images": {"table":"product_images","required":["product_id","media_id"]},
+    "article-systems": {"table":"article_systems","required":["article_id","system_id"]}
+  },
+  "defaults": {"status":"draft","sort_order":0},
+  "publishing": {"admin_only":true,"regulatory_review_required":true,"relationship_validation_required":true},
+  "deletion": {"admin_only":true,"prefer_archive_for_published_content":true}
+}
